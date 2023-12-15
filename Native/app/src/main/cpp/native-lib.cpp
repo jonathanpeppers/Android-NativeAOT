@@ -1,12 +1,22 @@
+#include <android_native_app_glue.h>
 #include <jni.h>
-#include <string>
 
-extern "C" JNIEXPORT jstring
+extern "C" {
 
-JNICALL
-Java_com_jonathanpeppers_nativeaot_MainActivity_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
+    void handle_cmd(android_app *pApp, int32_t cmd) {
+    }
+
+    void android_main(struct android_app *pApp) {
+        pApp->onAppCmd = handle_cmd;
+
+        int events;
+        android_poll_source *pSource;
+        do {
+            if (ALooper_pollAll(0, nullptr, &events, (void **) &pSource) >= 0) {
+                if (pSource) {
+                    pSource->process(pApp, pSource);
+                }
+            }
+        } while (!pApp->destroyRequested);
+    }
 }
