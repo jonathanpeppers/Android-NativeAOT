@@ -13,6 +13,10 @@ This will create:
 
 * `bin/Release/net8.0/linux-bionic-arm64/publish/hellonativeaot.so`
 
+And copy to:
+
+* `Native/app/lib/arm64-v8a/`
+
 ## Helpful Links
 
 * https://github.com/exelix11/SysDVR/blob/master/Client/Client.csproj
