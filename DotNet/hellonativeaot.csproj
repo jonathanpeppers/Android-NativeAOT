@@ -6,7 +6,14 @@
     <Nullable>enable</Nullable>
     <InvariantGlobalization>true</InvariantGlobalization>
     <PublishAot>true</PublishAot>
+    <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
     <RuntimeIdentifier>linux-bionic-arm64</RuntimeIdentifier>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- https://github.com/exelix11/SysDVR/blob/master/Client/Client.csproj -->
+    <!-- Android needs a proper soname property or it will refuse to load the library -->
+    <!-- <LinkerArg Include="-Wl,-soname,hellonativeaot.so" /> -->
+  </ItemGroup>
 
 </Project>
