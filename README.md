@@ -30,3 +30,11 @@ Results in the message:
 ```log
 01-29 10:41:04.363 11016 11042 I Native  : ManagedAdd(1, 2) returned: 3
 ```
+
+See [DotNet/README.md](DotNet/README.md) on how to build `hellonativeaot.so`.
+
+## TODO
+
+* `Console.WriteLine()` didn't work inside managed code. Why?
+
+* Try something more complicated. SkiaSharp?
