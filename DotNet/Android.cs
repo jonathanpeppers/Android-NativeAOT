@@ -49,6 +49,6 @@ enum LogPriority
 
 static class NativeMethods
 {
-    [DllImport("__Internal", EntryPoint = "__android_log_print", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("log", EntryPoint = "__android_log_print", CallingConvention = CallingConvention.Cdecl)]
     public static extern int LogPrint(LogPriority priority, string tag, string format);
 }
