@@ -41,7 +41,12 @@ This was an interesting example, to start a thread that processes stdout and cal
 
 * https://codelab.wordpress.com/2014/11/03/how-to-use-standard-output-streams-for-logging-in-android-apps/
 
-I may just figure how to to p/invoke `__android_log_print` from C# instead.
+Instead, we can p/invoke into:
+
+```csharp
+[DllImport("log", EntryPoint = "__android_log_print", CallingConvention = CallingConvention.Cdecl)]
+public static extern int LogPrint(LogPriority priority, string tag, string format);
+```
 
 ## TODO
 
