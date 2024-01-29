@@ -12,6 +12,11 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
+        // NOTE: for now, arm64 only. Might eventually do 4 ABIs
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
     }
 
     buildTypes {
