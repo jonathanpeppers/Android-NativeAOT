@@ -16,6 +16,10 @@
     <LinkerArg Include="-Wl,-soname,hellonativeaot.so" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+  </ItemGroup>
+
   <Target Name="_AfterPublish" AfterTargets="Publish">
     <PropertyGroup>
       <_NativeFolder>$(MSBuildThisFileDirectory)../Native/app/src/main/libs/arm64-v8a</_NativeFolder>
