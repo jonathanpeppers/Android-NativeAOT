@@ -11,7 +11,7 @@
 	"postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh",
 
 	"remoteEnv": {
-		"PATH": "${containerEnv:ANDROID_HOME}/ndk/26.1.10909125/toolchains/llvm/prebuilt/linux-x86_64/bin/:${containerEnv:PATH}"
+		"PATH": "${containerEnv:ANDROID_HOME}/ndk/23.2.8568313/toolchains/llvm/prebuilt/linux-x86_64/bin/:${containerEnv:PATH}"
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
