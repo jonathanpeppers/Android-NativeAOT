@@ -1,5 +1,6 @@
 #include <android_native_app_glue.h>
 #include <jni.h>
+#include "dotnet.h"
 
 extern "C" {
 
@@ -8,6 +9,9 @@ extern "C" {
 
     void android_main(struct android_app *pApp) {
         pApp->onAppCmd = handle_cmd;
+
+        int result = ManagedAdd(1, 2);
+        __android_log_print (ANDROID_LOG_INFO, "Native", "ManagedAdd(1, 2) returned: %i", result);
 
         int events;
         android_poll_source *pSource;
