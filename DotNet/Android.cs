@@ -49,6 +49,11 @@ enum LogPriority
 
 static class NativeMethods
 {
+    /// <summary>
+    /// Writes a formatted string to the log, with priority prio and tag tag.
+    /// The details of formatting are the same as for printf(3): http://man7.org/linux/man-pages/man3/printf.3.html
+    /// https://developer.android.com/ndk/reference/group/logging#__android_log_print
+    /// </summary>
     [DllImport("log", EntryPoint = "__android_log_print", CallingConvention = CallingConvention.Cdecl)]
     public static extern int LogPrint(LogPriority priority, string tag, string format);
 }
