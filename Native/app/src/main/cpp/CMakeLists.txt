@@ -16,6 +16,9 @@ add_library(native_app_glue STATIC
 target_include_directories(native_app_glue PUBLIC
         ${ANDROID_NDK}/sources/android/native_app_glue)
 
+add_library(hello_native_aot SHARED IMPORTED)
+set_property(TARGET hello_native_aot PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/hellonativeaot.so")
+
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate")
 
 # Creates and names a library, sets it as either STATIC
@@ -42,4 +45,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
         native_app_glue
+        hello_native_aot
         log)

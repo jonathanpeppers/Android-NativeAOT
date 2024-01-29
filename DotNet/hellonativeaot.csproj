@@ -18,7 +18,7 @@
 
   <Target Name="_AfterPublish" AfterTargets="Publish">
     <PropertyGroup>
-      <_NativeFolder>$(MSBuildThisFileDirectory)../Native/app/lib/arm64-v8a</_NativeFolder>
+      <_NativeFolder>$(MSBuildThisFileDirectory)../Native/app/src/main/libs/arm64-v8a</_NativeFolder>
     </PropertyGroup>
     <MakeDir Directories="$(_NativeFolder)" />
     <Copy SourceFiles="$(PublishDir)$(TargetName).so" DestinationFolder="$(_NativeFolder)" />

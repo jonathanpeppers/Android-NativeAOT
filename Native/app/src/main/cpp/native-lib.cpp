@@ -1,5 +1,6 @@
 #include <android_native_app_glue.h>
 #include <jni.h>
+#include <android/log.h>
 #include "dotnet.h"
 
 extern "C" {
