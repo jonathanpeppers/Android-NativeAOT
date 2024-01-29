@@ -33,6 +33,16 @@ Results in the message:
 
 See [DotNet/README.md](DotNet/README.md) on how to build `hellonativeaot.so`.
 
+## Notes
+
+`Console.WriteLine()` doesn't work because it basically just writes to Unix stdout. stdout does not appear in `adb logcat` output, as you have to call `__android_log_print` instead.
+
+This was an interesting example, to start a thread that processes stdout and calls the appropriate Android API:
+
+* https://codelab.wordpress.com/2014/11/03/how-to-use-standard-output-streams-for-logging-in-android-apps/
+
+I may just figure how to to p/invoke `__android_log_print` from C# instead.
+
 ## TODO
 
 * `Console.WriteLine()` didn't work inside managed code. Why?
