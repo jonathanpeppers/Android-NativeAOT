@@ -15,7 +15,7 @@ This will create:
 
 And copy to:
 
-* `Native/app/lib/arm64-v8a/`
+* `Native/app/src/main/libs/arm64-v8a/`
 
 ## Helpful Links
 
