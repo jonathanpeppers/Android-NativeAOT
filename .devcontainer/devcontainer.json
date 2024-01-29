@@ -12,6 +12,15 @@
 
 	"remoteEnv": {
 		"PATH": "${containerEnv:ANDROID_HOME}/ndk/23.2.8568313/toolchains/llvm/prebuilt/linux-x86_64/bin/:${containerEnv:PATH}"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csdevkit",
+				"ms-vscode.cpptools",
+				"icsharpcode.ilspy-vscode"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
