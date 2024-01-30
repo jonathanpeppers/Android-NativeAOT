@@ -5,11 +5,7 @@ namespace SkiaSharp;
 /// </summary>
 class SKFrameCounter
 {
-#if DEBUG
-	private const int DefaultSampleCount = 100;
-#else
-	private const int DefaultSampleCount = 0;
-#endif
+    private const int DefaultSampleCount = 100;
 
 	private readonly int sampleCount;
 	private readonly int[] samples;
