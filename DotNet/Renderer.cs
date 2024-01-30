@@ -80,9 +80,19 @@ public class Renderer
                 LogObject("surface.Canvas", canvas);
             }
 
+            ArgumentNullException.ThrowIfNull(canvas);
             using (new SKAutoCanvasRestore(canvas, true))
             {
                 // start drawing
+                canvas.Clear(SKColors.Pink);
+
+                var paint = new SKPaint();
+                paint.Color = SKColors.Blue;
+                paint.IsAntialias = true;
+                paint.Style = SKPaintStyle.Stroke;
+                paint.StrokeWidth = 10;
+
+                canvas.DrawLine(20, 20, 100, 100, paint);
             }
 
             // flush the SkiaSharp contents to GL
