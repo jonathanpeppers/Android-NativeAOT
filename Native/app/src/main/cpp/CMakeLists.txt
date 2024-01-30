@@ -50,4 +50,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         hello_native_aot
         skia
         log
-        EGL)
+        EGL
+        GLESv1_CM)
