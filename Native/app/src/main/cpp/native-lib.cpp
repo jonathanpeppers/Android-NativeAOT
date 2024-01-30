@@ -113,6 +113,39 @@ static int engine_init_display(struct engine* engine) {
     glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
 
+    // eglSwapBuffers should not automatically clear the screen
+    eglSurfaceAttrib(display, surface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
+
+    // Initialize Skia OpenGL ES
+
+    SkGraphics::Init();
+
+    const GrGLInterface* fInterface = GrGLCreateNativeInterface();
+    engine->skiaContext = GrContext::Create(kOpenGL_GrBackend, (GrBackendContext) fInterface);
+
+    GrBackendRenderTargetDesc desc;
+    desc.fWidth       = w;
+    desc.fHeight      = h;
+    desc.fConfig      = kSkia8888_GrPixelConfig;
+    desc.fOrigin      = kBottomLeft_GrSurfaceOrigin;
+    desc.fSampleCnt   = 0;
+    desc.fStencilBits = 8;
+
+    GrGLint buffer;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &buffer);
+    // Alternative:
+    // GR_GL_GetIntegerv(fInterface, GR_GL_FRAMEBUFFER_BINDING, &buffer);
+    desc.fRenderTargetHandle = buffer;
+
+    GrRenderTarget* renderTarget = engine->skiaContext->wrapBackendRenderTarget(desc);
+    SkAutoTUnref<SkBaseDevice> device(new SkGpuDevice(engine->skiaContext, renderTarget));
+
+    // Leaking fRenderTarget. Either wrap it in an SkAutoTUnref<> or unref it
+    // after creating the device.
+    SkSafeUnref(renderTarget);
+
+    engine->skiaCanvas = new SkCanvas(device);
+
     return 0;
 }
 
