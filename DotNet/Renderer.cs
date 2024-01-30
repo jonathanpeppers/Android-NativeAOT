@@ -33,6 +33,7 @@ public class Renderer
         try
         {
             GLES20.glClear(GLES20.COLOR_BUFFER_BIT | GLES20.DEPTH_BUFFER_BIT | GLES20.STENCIL_BUFFER_BIT);
+            GLES20.glClearColor(0, 1, 0, 1);
 
             // create the contexts if not done already
             if (context == null)

@@ -31,6 +31,9 @@ public static class GLES20
     public static extern void glClear(uint mask);
 
     [DllImport(libGLESv2)]
+    public static extern void glClearColor(float red, float green, float blue, float alpha);
+
+    [DllImport(libGLESv2)]
     public static extern void glGetIntegerv(uint pname, out int data);
 
     [DllImport(libGLESv2)]
