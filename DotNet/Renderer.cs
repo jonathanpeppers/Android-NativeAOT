@@ -38,6 +38,7 @@ public class Renderer
             if (context == null)
             {
                 var glInterface = GRGlInterface.Create();
+                LogObject("Created GRGlInterface", glInterface);
                 context = GRContext.CreateGl(glInterface);
                 LogObject("Created GRContext", context);
             }
