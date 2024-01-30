@@ -21,134 +21,6 @@ struct engine {
     int32_t height;
 };
 
-/**
-* Initialize an EGL context for the current display.
-*/
-static int engine_init_display(struct engine* engine) {
-    // initialize OpenGL ES and EGL
-
-    /*
-     * Here specify the attributes of the desired configuration.
-     * Below, we select an EGLConfig with at least 8 bits per color
-     * component compatible with on-screen windows
-     */
-    const EGLint attribs[] = {EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-                              EGL_BLUE_SIZE,    8,
-                              EGL_GREEN_SIZE,   8,
-                              EGL_RED_SIZE,     8,
-                              EGL_NONE};
-    EGLint w, h, format;
-    EGLint numConfigs;
-    EGLConfig config = nullptr;
-    EGLSurface surface;
-    EGLContext context;
-
-    EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-    eglInitialize(display, nullptr, nullptr);
-
-    /* Here, the application chooses the configuration it desires.
-     * find the best match if possible, otherwise use the very first one
-     */
-    eglChooseConfig(display, attribs, nullptr, 0, &numConfigs);
-    std::unique_ptr<EGLConfig[]> supportedConfigs(new EGLConfig[numConfigs]);
-    assert(supportedConfigs);
-    eglChooseConfig(display, attribs, supportedConfigs.get(), numConfigs,
-                    &numConfigs);
-    assert(numConfigs);
-    auto i = 0;
-    for (; i < numConfigs; i++) {
-        auto& cfg = supportedConfigs[i];
-        EGLint r, g, b, d;
-        if (eglGetConfigAttrib(display, cfg, EGL_RED_SIZE, &r) &&
-            eglGetConfigAttrib(display, cfg, EGL_GREEN_SIZE, &g) &&
-            eglGetConfigAttrib(display, cfg, EGL_BLUE_SIZE, &b) &&
-            eglGetConfigAttrib(display, cfg, EGL_DEPTH_SIZE, &d) && r == 8 &&
-            g == 8 && b == 8 && d == 0) {
-            config = supportedConfigs[i];
-            break;
-        }
-    }
-    if (i == numConfigs) {
-        config = supportedConfigs[0];
-    }
-
-    if (config == nullptr) {
-        __android_log_print(ANDROID_LOG_WARN, "Native", "Unable to initialize EGLConfig");
-        return -1;
-    }
-
-    /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
-     * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
-     * As soon as we picked a EGLConfig, we can safely reconfigure the
-     * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
-    eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format);
-    surface =
-            eglCreateWindowSurface(display, config, engine->app->window, nullptr);
-    context = eglCreateContext(display, config, nullptr, nullptr);
-
-    if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-        __android_log_print(ANDROID_LOG_WARN, "Native", "Unable to eglMakeCurrent");
-        return -1;
-    }
-
-    eglQuerySurface(display, surface, EGL_WIDTH, &w);
-    eglQuerySurface(display, surface, EGL_HEIGHT, &h);
-
-    engine->display = display;
-    engine->context = context;
-    engine->surface = surface;
-    engine->width = w;
-    engine->height = h;
-
-    // Check openGL on the system
-    auto opengl_info = {GL_VENDOR, GL_RENDERER, GL_VERSION, GL_EXTENSIONS};
-    for (auto name : opengl_info) {
-        auto info = glGetString(name);
-        __android_log_print(ANDROID_LOG_INFO, "Native", "OpenGL Info: %s", info);
-    }
-    // Initialize GL state.
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
-    glDisable(GL_DEPTH_TEST);
-
-    // eglSwapBuffers should not automatically clear the screen
-    eglSurfaceAttrib(display, surface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
-
-    // Initialize Skia OpenGL ES
-
-    SkGraphics::Init();
-
-    const GrGLInterface* fInterface = GrGLCreateNativeInterface();
-    engine->skiaContext = GrContext::Create(kOpenGL_GrBackend, (GrBackendContext) fInterface);
-
-    GrBackendRenderTargetDesc desc;
-    desc.fWidth       = w;
-    desc.fHeight      = h;
-    desc.fConfig      = kSkia8888_GrPixelConfig;
-    desc.fOrigin      = kBottomLeft_GrSurfaceOrigin;
-    desc.fSampleCnt   = 0;
-    desc.fStencilBits = 8;
-
-    GrGLint buffer;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &buffer);
-    // Alternative:
-    // GR_GL_GetIntegerv(fInterface, GR_GL_FRAMEBUFFER_BINDING, &buffer);
-    desc.fRenderTargetHandle = buffer;
-
-    GrRenderTarget* renderTarget = engine->skiaContext->wrapBackendRenderTarget(desc);
-    SkAutoTUnref<SkBaseDevice> device(new SkGpuDevice(engine->skiaContext, renderTarget));
-
-    // Leaking fRenderTarget. Either wrap it in an SkAutoTUnref<> or unref it
-    // after creating the device.
-    SkSafeUnref(renderTarget);
-
-    engine->skiaCanvas = new SkCanvas(device);
-
-    return 0;
-}
-
 extern "C" {
 
     void handle_cmd(android_app *pApp, int32_t cmd) {
@@ -157,30 +29,48 @@ extern "C" {
             case APP_CMD_INIT_WINDOW:
                 // The window is being shown, get it ready.
                 if (engine->app->window != nullptr) {
-                    engine_init_display(engine);
-                    //TODO:
-                    //engine_draw_frame(engine);
+                    Render();
                 }
+                break;
+            case APP_CMD_GAINED_FOCUS:
+                engine->animating = 1;
+                break;
+            case APP_CMD_LOST_FOCUS:
+                engine->animating = 0;
+                Render();
                 break;
             default:
                 break;
         }
     }
 
-    void android_main(struct android_app *pApp) {
-        pApp->onAppCmd = handle_cmd;
+    int32_t handle_input(struct android_app* app, AInputEvent* event) {
+        return 0;
+    }
 
-        int result = ManagedAdd(1, 2);
-        __android_log_print (ANDROID_LOG_INFO, "Native", "ManagedAdd(1, 2) returned: %i", result);
+    void android_main(struct android_app *state) {
+        struct engine engine;
+        memset(&engine, 0, sizeof(engine));
+        state->userData     = &engine;
+        state->onAppCmd     = handle_cmd;
+        state->onInputEvent = handle_input;
+        engine.app = state;
+
+        __android_log_print (ANDROID_LOG_INFO, "Native", "Entering android_main");
 
         int events;
         android_poll_source *pSource;
         do {
             if (ALooper_pollAll(0, nullptr, &events, (void **) &pSource) >= 0) {
                 if (pSource) {
-                    pSource->process(pApp, pSource);
+                    pSource->process(state, pSource);
                 }
             }
-        } while (!pApp->destroyRequested);
+
+            if (engine.animating) {
+                Render();
+            }
+
+        } while (!state->destroyRequested);
     }
 }
