@@ -114,11 +114,11 @@ public class Renderer
             ArgumentNullException.ThrowIfNull(canvas);
             using (new SKAutoCanvasRestore(canvas, true))
             {
-                var duration = frameCounter.NextFrame();
+                frameCounter.NextFrame();
 
                 currentEffectBuilder ??= SKRuntimeEffect.BuildShader(shaderSource);
                 currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
-                currentEffectBuilder.Uniforms["iTime"] = (float)duration.TotalSeconds;
+                currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.Duration.TotalSeconds;
                 currentShader = currentEffectBuilder.Build();
                 currentPaint.Shader = currentShader;
 
