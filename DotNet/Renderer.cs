@@ -21,6 +21,11 @@ public class Renderer
     static SKSizeI lastSize;
     static SKSizeI newSize;
 
+    static void LogObject(string message, object obj)
+    {
+        LogPrint(LogPriority.Info, "Managed", $"{message}: {obj?.ToString() ?? "NULL!"}");
+    }
+
     [UnmanagedCallersOnly(EntryPoint = "Render")]
     public static void Render()
     {
@@ -34,6 +39,7 @@ public class Renderer
             {
                 var glInterface = GRGlInterface.Create();
                 context = GRContext.CreateGl(glInterface);
+                LogObject("Created GRContext", context);
             }
 
             // manage the drawing surface
@@ -59,13 +65,18 @@ public class Renderer
                 // re-create the render target
                 renderTarget?.Dispose();
                 renderTarget = new GRBackendRenderTarget(newSize.Width, newSize.Height, samples, stencil, glInfo);
+                LogObject("Created GRBackendRenderTarget", renderTarget);
             }
 
             // create the surface
             if (surface == null)
             {
+                LogObject("Creating SKSurface, context", context);
+                LogObject("Creating SKSurface, renderTarget", renderTarget);
                 surface = SKSurface.Create(context, renderTarget, surfaceOrigin, colorType);
+                LogObject("Created SKSurface", surface);
                 canvas = surface.Canvas;
+                LogObject("surface.Canvas", canvas);
             }
 
             using (new SKAutoCanvasRestore(canvas, true))
