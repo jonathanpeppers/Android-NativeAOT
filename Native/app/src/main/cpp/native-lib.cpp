@@ -134,6 +134,7 @@ extern "C" {
 
     void handle_cmd(android_app *pApp, int32_t cmd) {
         auto* engine = (struct engine*)pApp->userData;
+        __android_log_print (ANDROID_LOG_INFO, "Native", "handle_cmd: %i", cmd);
         switch (cmd) {
             case APP_CMD_INIT_WINDOW:
                 // The window is being shown, get it ready.
