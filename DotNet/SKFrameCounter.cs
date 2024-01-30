@@ -29,6 +29,8 @@ class SKFrameCounter
 
 	public TimeSpan Duration { get; private set; }
 
+    public TimeSpan TotalDuration { get; private set; }
+
 	public float Rate { get; private set; }
 
 	public void Reset()
@@ -62,6 +64,7 @@ class SKFrameCounter
 			Rate = avg <= 0 ? 0 : 1000f / avg;
 		}
 
+        TotalDuration += Duration;
 		return Duration;
 	}
 

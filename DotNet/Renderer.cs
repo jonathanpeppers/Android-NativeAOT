@@ -118,7 +118,7 @@ public class Renderer
 
                 currentEffectBuilder ??= SKRuntimeEffect.BuildShader(shaderSource);
                 currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
-                currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.Duration.TotalSeconds;
+                currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.TotalDuration.TotalSeconds;
                 currentShader = currentEffectBuilder.Build();
                 currentPaint.Shader = currentShader;
 
