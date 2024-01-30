@@ -30,7 +30,7 @@ public class Renderer
     };
     static readonly SKFont fpsFont = new()
     {
-        Size = 10f,
+        Size = 44f,
     };
     static SKRuntimeShaderBuilder? currentEffectBuilder;
     static SKShader? currentShader;
@@ -132,7 +132,7 @@ public class Renderer
                 currentPaint.Shader = currentShader;
 
                 canvas.DrawRect(0, 0, lastSize.Width, lastSize.Height, currentPaint);
-                canvas.DrawText($"{frameCounter.Rate:0.0} fps", 10, 100, fpsFont, fpsPaint);
+                canvas.DrawText($"{frameCounter.Rate:0.0} fps", 40, 200, fpsFont, fpsPaint);
             }
 
             // flush the SkiaSharp contents to GL
