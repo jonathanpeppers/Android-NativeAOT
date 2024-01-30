@@ -33,7 +33,6 @@ public class Renderer
         try
         {
             GLES20.glClear(GLES20.COLOR_BUFFER_BIT | GLES20.DEPTH_BUFFER_BIT | GLES20.STENCIL_BUFFER_BIT);
-            GLES20.glClearColor(0, 1, 0, 1);
 
             // create the contexts if not done already
             if (context == null)
@@ -87,11 +86,13 @@ public class Renderer
                 // start drawing
                 canvas.Clear(SKColors.Pink);
 
-                var paint = new SKPaint();
-                paint.Color = SKColors.Blue;
-                paint.IsAntialias = true;
-                paint.Style = SKPaintStyle.Stroke;
-                paint.StrokeWidth = 10;
+                var paint = new SKPaint
+                {
+                    Color = SKColors.Blue,
+                    IsAntialias = true,
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = 10
+                };
 
                 canvas.DrawLine(20, 20, 100, 100, paint);
             }
