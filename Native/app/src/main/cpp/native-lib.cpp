@@ -81,7 +81,8 @@ extern "C" {
         eglQuerySurface(display, surface, EGL_HEIGHT, &h);
 
         __android_log_print(ANDROID_LOG_INFO, "Native", "Canvas size: %d x %d", w, h);
-        glViewport(0, 0, w, h);
+        // Call managed
+        Resize(w, h);
 
         engine->display = display;
         engine->context = context;
