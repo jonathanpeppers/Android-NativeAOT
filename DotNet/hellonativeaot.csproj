@@ -7,7 +7,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <PublishAot>true</PublishAot>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
-    <RuntimeIdentifier>linux-bionic-arm64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' ">linux-bionic-arm64</RuntimeIdentifier>
     <!-- SkiaSharp nightly feed -->
     <RestoreAdditionalProjectSources>https://aka.ms/skiasharp-eap/index.json</RestoreAdditionalProjectSources>
   </PropertyGroup>
