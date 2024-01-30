@@ -14,11 +14,6 @@ struct engine {
     struct android_app* app;
 
     int animating;
-    EGLDisplay display;
-    EGLSurface surface;
-    EGLContext context;
-    int32_t width;
-    int32_t height;
 };
 
 extern "C" {
@@ -29,14 +24,20 @@ extern "C" {
             case APP_CMD_INIT_WINDOW:
                 // The window is being shown, get it ready.
                 if (engine->app->window != nullptr) {
+                    __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from APP_CMD_INIT_WINDOW");
                     Render();
                 }
+                break;
+            case APP_CMD_TERM_WINDOW:
+                engine->animating = 0;
+                //TODO: we need to shutdown SkiaSharp
                 break;
             case APP_CMD_GAINED_FOCUS:
                 engine->animating = 1;
                 break;
             case APP_CMD_LOST_FOCUS:
                 engine->animating = 0;
+                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from APP_CMD_LOST_FOCUS");
                 Render();
                 break;
             default:
@@ -68,6 +69,7 @@ extern "C" {
             }
 
             if (engine.animating) {
+                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from loop");
                 Render();
             }
 
