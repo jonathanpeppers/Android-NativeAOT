@@ -1,3 +1,3 @@
-extern "C" int Render();
+extern "C" void Render();
 
-extern "C" int Resize(int width, int height);
+extern "C" void Resize(int width, int height);
