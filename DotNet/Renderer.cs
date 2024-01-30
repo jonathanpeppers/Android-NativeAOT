@@ -43,7 +43,7 @@ public class Renderer
             vec3 d = .5 - fragcoord.xy1 / iResolution.y;
             vec3 p=vec3(0);
             for (int i = 0; i < 32; i++) {
-                p += f(p) * d;
+            p += f(p) * d;
             }
             return ((sin(p) + vec3(2, 5, 12)) / length(p)).xyz1;
         }
@@ -113,12 +113,7 @@ public class Renderer
             {
                 var duration = frameCounter.NextFrame();
 
-                if (currentEffectBuilder is null)
-                {
-                    var shader = SKRuntimeEffect.CreateShader(shaderSource, out string errors) ??
-                        throw new InvalidOperationException($"Unable to create SKRuntimeEffect: {errors}");
-                    currentEffectBuilder = new SKRuntimeShaderBuilder(shader);
-                }
+                currentEffectBuilder ??= SKRuntimeEffect.BuildShader(shaderSource);
                 currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
                 currentEffectBuilder.Uniforms["iTime"] = (float)duration.TotalSeconds;
                 currentShader = currentEffectBuilder.Build();
