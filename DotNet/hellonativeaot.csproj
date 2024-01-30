@@ -25,7 +25,10 @@
       <_NativeFolder>$(MSBuildThisFileDirectory)../Native/app/src/main/libs/arm64-v8a</_NativeFolder>
     </PropertyGroup>
     <MakeDir Directories="$(_NativeFolder)" />
-    <Copy SourceFiles="$(PublishDir)$(TargetName).so" DestinationFolder="$(_NativeFolder)" />
+    <ItemGroup>
+      <_FilesToCopy Include="$(PublishDir)$(TargetName).*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_FilesToCopy)" DestinationFolder="$(_NativeFolder)" />
   </Target>
 
 </Project>
