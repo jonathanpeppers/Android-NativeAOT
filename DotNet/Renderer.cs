@@ -32,6 +32,9 @@ public class Renderer
     /// </summary>
     const string shaderSource =
         """
+        uniform float3 iResolution;      // Viewport resolution (pixels)
+        uniform float  iTime;            // Shader playback time (s)
+
         float f(vec3 p) {
             p.z -= iTime * 10.;
             float a = p.z * .1;
@@ -43,7 +46,7 @@ public class Renderer
             vec3 d = .5 - fragcoord.xy1 / iResolution.y;
             vec3 p=vec3(0);
             for (int i = 0; i < 32; i++) {
-            p += f(p) * d;
+                p += f(p) * d;
             }
             return ((sin(p) + vec3(2, 5, 12)) / length(p)).xyz1;
         }
