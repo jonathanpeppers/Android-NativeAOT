@@ -22,6 +22,9 @@ public class Renderer
     static SKSizeI newSize;
 
     static readonly SKFrameCounter frameCounter = new();
+    static readonly SKPaint currentPaint = new();
+    static SKRuntimeShaderBuilder? currentEffectBuilder;
+    static SKShader? currentShader;
 
     /// <summary>
     /// https://shaders.skia.org/?id=de2a4d7d893a7251eb33129ddf9d76ea517901cec960db116a1bbd7832757c1f
@@ -108,7 +111,15 @@ public class Renderer
             ArgumentNullException.ThrowIfNull(canvas);
             using (new SKAutoCanvasRestore(canvas, true))
             {
-                frameCounter.NextFrame();
+                var duration = frameCounter.NextFrame();
+
+                currentEffectBuilder ??= SKRuntimeEffect.BuildShader(shaderSource);
+                currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
+                currentEffectBuilder.Uniforms["iTime"] = (float)duration.TotalSeconds;
+                currentShader = currentEffectBuilder.Build();
+                currentPaint.Shader = currentShader;
+
+                canvas.DrawRect(0, 0, lastSize.Width, lastSize.Height, currentPaint);
             }
 
             // flush the SkiaSharp contents to GL
