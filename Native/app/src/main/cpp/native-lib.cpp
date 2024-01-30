@@ -107,16 +107,26 @@ extern "C" {
         engine->surface   = EGL_NO_SURFACE;
     }
 
+    void draw_frame(struct engine* engine) {
+        if (engine->display == NULL) return;
+
+        // Call into managed
+        Render();
+
+        // Swap buffers
+        eglSwapBuffers(engine->display, engine->surface);
+    }
+
     void handle_cmd(android_app *pApp, int32_t cmd) {
         auto* engine = (struct engine*)pApp->userData;
         switch (cmd) {
             case APP_CMD_INIT_WINDOW:
                 // The window is being shown, get it ready.
                 if (engine->app->window != nullptr) {
-                    __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from APP_CMD_INIT_WINDOW");
                     init_display(engine);
                     engine->animating = 1;
-                    Render();
+                    __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from APP_CMD_INIT_WINDOW");
+                    draw_frame(engine);
                 }
                 break;
             case APP_CMD_TERM_WINDOW:
@@ -128,8 +138,8 @@ extern "C" {
                 break;
             case APP_CMD_LOST_FOCUS:
                 engine->animating = 0;
-                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from APP_CMD_LOST_FOCUS");
-                Render();
+                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from APP_CMD_LOST_FOCUS");
+                draw_frame(engine);
                 break;
             default:
                 break;
@@ -160,8 +170,8 @@ extern "C" {
             }
 
             if (engine.animating) {
-                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling Render() from loop");
-                Render();
+                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from loop");
+                draw_frame(&engine);
             }
 
         } while (!state->destroyRequested);
