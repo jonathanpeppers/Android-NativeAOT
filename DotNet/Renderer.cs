@@ -97,7 +97,7 @@ public class Renderer
             }
 
             // flush the SkiaSharp contents to GL
-            canvas?.Flush();
+            canvas.Flush();
             context.Flush();
         }
         catch (Exception exc)
