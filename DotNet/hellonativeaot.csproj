@@ -8,6 +8,8 @@
     <PublishAot>true</PublishAot>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
     <RuntimeIdentifier>linux-bionic-arm64</RuntimeIdentifier>
+    <!-- SkiaSharp nightly feed -->
+    <RestoreAdditionalProjectSources>https://aka.ms/skiasharp-eap/index.json</RestoreAdditionalProjectSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.1.4" />
   </ItemGroup>
 
   <Target Name="_AfterPublish" AfterTargets="Publish">
