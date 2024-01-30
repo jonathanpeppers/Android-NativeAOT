@@ -88,6 +88,16 @@ extern "C" {
         engine->surface = surface;
         engine->width   = w;
         engine->height  = h;
+
+        // Initialize GL state.
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glShadeModel(GL_SMOOTH);
+
+        // eglSwapBuffers should not automatically clear the screen
+        eglSurfaceAttrib(display, surface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
     }
 
     void term_display(struct engine* engine) {
@@ -109,6 +119,10 @@ extern "C" {
 
     void draw_frame(struct engine* engine) {
         if (engine->display == NULL) return;
+
+        // If we wanted to test OpenGL is working
+        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        // glClearColor(1, 0, 0, 1);
 
         // Call into managed
         Render();
