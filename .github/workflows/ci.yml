@@ -25,3 +25,10 @@ jobs:
             cd .. &&
             cd Native &&
             ./gradlew assembleRelease
+
+      - name: archive apk
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: Native/app/build/outputs/apk/release
+          if-no-files-found: error
