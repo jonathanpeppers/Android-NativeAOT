@@ -171,6 +171,7 @@ extern "C" {
                     float y = AMotionEvent_getY(event, 0);
                     __android_log_print(ANDROID_LOG_INFO, "Native",
                                         "AMOTION_EVENT_ACTION_DOWN (%f, %f)", x, y);
+                    OnTap(x, y);
                     break;
                 }
                 default:
