@@ -12,6 +12,7 @@ static class Shaders
             """
             uniform float3 iResolution;      // Viewport resolution (pixels)
             uniform float  iTime;            // Shader playback time (s)
+            uniform float2 iMouse;           // Mouse drag pos=.xy
 
             """;
         source += GetRandomShader(Random.Shared.Next(3));

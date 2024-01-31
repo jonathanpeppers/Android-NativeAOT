@@ -94,7 +94,7 @@ public class Renderer
                 currentEffectBuilder ??= Shaders.GetRandomShader();
                 currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
                 currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.TotalDuration.TotalSeconds;
-                currentEffectBuilder.Uniforms["iMouse"] = new SKPoint3(X, Y, 0);
+                currentEffectBuilder.Uniforms["iMouse"] = new SKPoint(X, Y);
                 currentShader = currentEffectBuilder.Build();
                 currentPaint.Shader = currentShader;
 
