@@ -71,8 +71,8 @@ A breakdown of the files inside:
 
 If we reduce this to a "Hello World" example:
 
-* `hello.apk` is ~561 KB!
-* `libdotnet.so` (uncompressed) is ~1.1 MB
+* `hello.apk` is ~447 KB!
+* `libdotnet.so` (uncompressed) is ~981 KB!
 
 ## "Hello World" Example
 
