@@ -6,12 +6,13 @@ Simply do:
 
 ```sh
 cd DotNet
-dotnet publish -c Release
+dotnet publish
 ```
 
 This will create:
 
 * `bin/Release/net8.0/linux-bionic-arm64/publish/libdotnet.so`
+* `bin/Release/net8.0/linux-bionic-arm64/publish/libdotnet.so.dbg`
 
 And copy to:
 
