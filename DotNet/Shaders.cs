@@ -8,7 +8,13 @@ static class Shaders
 {
     public static SKRuntimeShaderBuilder GetRandomShader()
     {
-        string source = GetRandomShader(Random.Shared.Next(2));
+        string source =
+            """
+            uniform float3 iResolution;      // Viewport resolution (pixels)
+            uniform float  iTime;            // Shader playback time (s)
+            
+            """;
+        source += GetRandomShader(Random.Shared.Next(2));
         return SKRuntimeEffect.BuildShader(source);
     }
 
@@ -21,9 +27,6 @@ static class Shaders
             // https://shaders.skia.org/?id=de2a4d7d893a7251eb33129ddf9d76ea517901cec960db116a1bbd7832757c1f
             // Source: @notargs https://twitter.com/notargs/status/1250468645030858753
             0 => """
-                uniform float3 iResolution;      // Viewport resolution (pixels)
-                uniform float  iTime;            // Shader playback time (s)
-
                 float f(vec3 p) {
                     p.z -= iTime * 10.;
                     float a = p.z * .1;
