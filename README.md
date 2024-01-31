@@ -30,7 +30,7 @@ The C# side is a:
 
 ## App Size
 
-The release `.apk` file of the SkiaSharp sample is ~4,528kb.
+The release `.apk` file of the SkiaSharp sample is ~4.5 MB
 
 A breakdown of the files inside:
 
