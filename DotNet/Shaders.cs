@@ -44,50 +44,94 @@ static class Shaders
                 }
                 """,
             
-            // https://shaders.skia.org/?id=2bee4488820c3253cd8861e85ce3cab86f482cfddd79cfd240591bf64f7bcc38
-            // Source: @XorDev https://twitter.com/XorDev/status/1475524322785640455
+            // https://shaders.skia.org/?id=80c3854680c3e99d71fbe24d86185d5bb20cb047305242f9ecb5aff0f102cf73
+            // Source: @kamoshika_vrc https://twitter.com/kamoshika_vrc/status/1495081980278751234
             1 => """
-                vec4 main(vec2 FC) {
-                    vec4 o = vec4(0);
-                    vec2 p = vec2(0), c=p, u=FC.xy*2.-iResolution.xy;
-                    float a;
-                    for (float i=0; i<4e2; i++) {
-                        a = i/2e2-1.;
-                        p = cos(i*2.4+iTime+vec2(0,11))*sqrt(1.-a*a);
-                        c = u/iResolution.y+vec2(p.x,a)/(p.y+2.);
-                        o += (cos(i+vec4(0,2,4,0))+1.)/dot(c,c)*(1.-p.y)/3e4;
+                const float PI2 = 6.28318530718;
+                float F(vec2 c){
+                    return fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453);
+                }
+
+                half4 main(float2 FC) {
+                    vec4 o;
+                    float t = iTime;
+                    vec2 r = iResolution.xy * vec2(1, -1);
+                    vec3 R=normalize(vec3((FC.xy*2.-r)/r.y,1));
+                    for(float i=0; i<100; ++i) {
+                        float I=floor(t/.1)+i;
+                        float d=(I*.1-t)/R.z;
+                        vec2 p=d*R.xy+vec2(sin(t+F(I.xx)*PI2)*.3+F(I.xx*.9),t+F(I.xx*.8));
+                        if (F(I/100+ceil(p))<.2) {
+                        o+=smoothstep(.1,0.,length(fract(p)-.5))*exp(-d*d*.04);
+                        }
                     }
                     return o;
                 }
                 """,
 
-            // https://shaders.skia.org/?id=23a360c975c3cb195c89ccdf65ec549e279ce8a959643b447e69cb70614a6eca
-            // Source: @zozuar https://twitter.com/zozuar/status/1492217553103503363
+            // https://shaders.skia.org/?id=e0ec9ef204763445036d8a157b1b5c8929829c3e1ee0a265ed984aeddc8929e2
+            // Star Nest by Pablo Roman Andrioli
+            // This content is under the MIT License.
             2 => """
-                vec3 hsv(float h, float s, float v){
-                    vec4 t = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-                    vec3 p = abs(fract(vec3(h) + t.xyz) * 6.0 - vec3(t.w));
-                    return v * mix(vec3(t.x), clamp(p - vec3(t.x), 0.0, 1.0), s);
-                }
+                const int iterations = 17;
+                const float formuparam = 0.53;
 
-                vec4 main(vec2 FC) {
-                    float e=0,R=0,t=iTime,s;
-                    vec2 r = iResolution.xy;
-                    vec3 q=vec3(0,0,-1), p, d=vec3((FC.xy-.5*r)/r.y,.7);
-                    vec4 o=vec4(0);
-                    for(float i=0;i<100;++i) {
-                        o.rgb+=hsv(.1,e*.4,e/1e2)+.005;
-                        p=q+=d*max(e,.02)*R*.3;
-                        float py = (p.x == 0 && p.y == 0) ? 1 : p.y;
-                        p=vec3(log(R=length(p))-t,e=asin(-p.z/R)-1.,atan(p.x,py)+t/3.);
-                        s=1;
-                        for(int z=1; z<=9; ++z) {
-                        e+=cos(dot(sin(p*s),cos(p.zxy*s)))/s;
-                        s+=s;
+                const int volsteps = 20;
+                const float stepsize = 0.1;
+
+                const float zoom  = 0.800;
+                const float tile  = 0.850;
+                const float speed =0.010 ;
+
+                const float brightness =0.0015;
+                const float darkmatter =0.300;
+                const float distfading =0.730;
+                const float saturation =0.850;
+
+
+                half4 main( in vec2 fragCoord )
+                {
+                    //get coords and direction
+                    vec2 uv=fragCoord.xy/iResolution.xy-.5;
+                    uv.y*=iResolution.y/iResolution.x;
+                    vec3 dir=vec3(uv*zoom,1.);
+                    float time=iTime*speed+.25;
+
+                    //mouse rotation
+                    float a1=.5+iMouse.x/iResolution.x*2.;
+                    float a2=.8+iMouse.y/iResolution.y*2.;
+                    mat2 rot1=mat2(cos(a1),sin(a1),-sin(a1),cos(a1));
+                    mat2 rot2=mat2(cos(a2),sin(a2),-sin(a2),cos(a2));
+                    dir.xz*=rot1;
+                    dir.xy*=rot2;
+                    vec3 from=vec3(1.,.5,0.5);
+                    from+=vec3(time*2.,time,-2.);
+                    from.xz*=rot1;
+                    from.xy*=rot2;
+                    
+                    //volumetric rendering
+                    float s=0.1,fade=1.;
+                    vec3 v=vec3(0.);
+                    for (int r=0; r<volsteps; r++) {
+                        vec3 p=from+s*dir*.5;
+                        p = abs(vec3(tile)-mod(p,vec3(tile*2.))); // tiling fold
+                        float pa,a=pa=0.;
+                        for (int i=0; i<iterations; i++) { 
+                            p=abs(p)/dot(p,p)-formuparam; // the magic formula
+                            a+=abs(length(p)-pa); // absolute sum of average change
+                            pa=length(p);
                         }
-                        i>50.?d/=-d:d;
+                        float dm=max(0.,darkmatter-a*a*.001); //dark matter
+                        a*=a*a; // add contrast
+                        if (r>6) fade*=1.-dm; // dark matter, don't render near
+                        //v+=vec3(dm,dm*.5,0.);
+                        v+=fade;
+                        v+=vec3(s,s*s,s*s*s*s)*a*brightness*fade; // coloring based on distance
+                        fade*=distfading; // distance fading
+                        s+=stepsize;
                     }
-                    return o;
+                    v=mix(vec3(length(v)),v,saturation); //color adjust
+                    return vec4(v*.01,1.);	
                 }
                 """,
 
