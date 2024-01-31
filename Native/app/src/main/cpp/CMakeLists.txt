@@ -16,8 +16,8 @@ add_library(native_app_glue STATIC
 target_include_directories(native_app_glue PUBLIC
         ${ANDROID_NDK}/sources/android/native_app_glue)
 
-add_library(hello_native_aot SHARED IMPORTED)
-set_property(TARGET hello_native_aot PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/hellonativeaot.so")
+add_library(dotnet SHARED IMPORTED)
+set_property(TARGET dotnet PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/libdotnet.so")
 add_library(skia SHARED IMPORTED)
 set_property(TARGET skia PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/libSkiaSharp.so")
 
@@ -47,8 +47,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
         native_app_glue
-        hello_native_aot
-        skia
+        dotnet
         log
         EGL
         GLESv1_CM)

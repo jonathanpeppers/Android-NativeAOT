@@ -15,7 +15,7 @@
   <ItemGroup>
     <!-- https://github.com/exelix11/SysDVR/blob/master/Client/Client.csproj -->
     <!-- Android needs a proper soname property or it will refuse to load the library -->
-    <LinkerArg Include="-Wl,-soname,hellonativeaot.so" />
+    <LinkerArg Include="-Wl,-soname,libdotnet.so" />
   </ItemGroup>
 
   <ItemGroup>

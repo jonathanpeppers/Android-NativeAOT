@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using SkiaSharp;
 using static Android.NativeMethods;
 
-namespace hellonativeaot;
+namespace libdotnet;
 
 /// <summary>
 /// https://github.com/mono/SkiaSharp/blob/9274aeec807fd17eec2a3266ad4c2475c37d8a0c/source/SkiaSharp.Views/SkiaSharp.Views/Platform/Android/SKGLSurfaceViewRenderer.cs#L32

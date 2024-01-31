@@ -31,7 +31,7 @@ Results in the message:
 01-29 10:41:04.363 11016 11042 I Native  : ManagedAdd(1, 2) returned: 3
 ```
 
-See [DotNet/README.md](DotNet/README.md) on how to build `hellonativeaot.so`.
+See [DotNet/README.md](DotNet/README.md) on how to build `libdotnet.so`.
 
 ## Notes
 

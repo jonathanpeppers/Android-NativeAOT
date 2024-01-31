@@ -1,4 +1,4 @@
-# Build `hellonativeaot.so`
+# Build `libdotnet.so`
 
 It's likely easiest on GitHub Codespaces, as I have configured a working environment.
 
@@ -11,7 +11,7 @@ dotnet publish -c Release
 
 This will create:
 
-* `bin/Release/net8.0/linux-bionic-arm64/publish/hellonativeaot.so`
+* `bin/Release/net8.0/linux-bionic-arm64/publish/libdotnet.so`
 
 And copy to:
 

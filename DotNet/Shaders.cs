@@ -2,7 +2,7 @@ using Android;
 using SkiaSharp;
 using static Android.NativeMethods;
 
-namespace hellonativeaot;
+namespace libdotnet;
 
 static class Shaders
 {
