@@ -21,15 +21,15 @@ jobs:
         with:
           runCmd: >
             cd DotNet &&
-            dotnet publish &&
+            dotnet publish -bl:../Native/app/build/outputs/dotnet.binlog &&
             cd .. &&
             cd Native &&
             ./gradlew assembleDebug &&
             ./gradlew assembleRelease
 
-      - name: archive apks
+      - name: archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: apk
-          path: Native/app/build/outputs/apk
+          name: outputs
+          path: Native/app/build/outputs
           if-no-files-found: error
