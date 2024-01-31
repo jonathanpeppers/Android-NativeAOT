@@ -21,6 +21,8 @@ struct engine {
     int32_t height;
 };
 
+const char* TAG = "NATIVE";
+
 extern "C" {
 
     void init_display(struct engine* engine)
@@ -73,14 +75,14 @@ extern "C" {
         context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribs);
 
         if (!eglMakeCurrent(display, surface, surface, context)) {
-            __android_log_print(ANDROID_LOG_WARN, "Native", "Unable to eglMakeCurrent");
+            __android_log_print(ANDROID_LOG_WARN, TAG, "Unable to eglMakeCurrent");
             return;
         }
 
         eglQuerySurface(display, surface, EGL_WIDTH, &w);
         eglQuerySurface(display, surface, EGL_HEIGHT, &h);
 
-        __android_log_print(ANDROID_LOG_INFO, "Native", "Canvas size: %d x %d", w, h);
+        __android_log_print(ANDROID_LOG_INFO, TAG, "Canvas size: %d x %d", w, h);
         // Call managed
         Resize(w, h);
 
@@ -134,14 +136,14 @@ extern "C" {
 
     void handle_cmd(android_app *pApp, int32_t cmd) {
         auto* engine = (struct engine*)pApp->userData;
-        __android_log_print (ANDROID_LOG_INFO, "Native", "handle_cmd: %i", cmd);
+        __android_log_print (ANDROID_LOG_INFO, TAG, "handle_cmd: %i", cmd);
         switch (cmd) {
             case APP_CMD_INIT_WINDOW:
                 // The window is being shown, get it ready.
                 if (engine->app->window != nullptr) {
                     init_display(engine);
                     engine->animating = 1;
-                    __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from APP_CMD_INIT_WINDOW");
+                    __android_log_print (ANDROID_LOG_INFO, TAG, "Calling draw_frame() from APP_CMD_INIT_WINDOW");
                     draw_frame(engine);
                 }
                 break;
@@ -154,7 +156,7 @@ extern "C" {
                 break;
             case APP_CMD_LOST_FOCUS:
                 engine->animating = 0;
-                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from APP_CMD_LOST_FOCUS");
+                __android_log_print (ANDROID_LOG_INFO, TAG, "Calling draw_frame() from APP_CMD_LOST_FOCUS");
                 draw_frame(engine);
                 break;
             default:
@@ -169,7 +171,7 @@ extern "C" {
                 case AMOTION_EVENT_ACTION_DOWN: {
                     float x = AMotionEvent_getX(event, 0);
                     float y = AMotionEvent_getY(event, 0);
-                    __android_log_print(ANDROID_LOG_INFO, "Native",
+                    __android_log_print(ANDROID_LOG_INFO, TAG,
                                         "AMOTION_EVENT_ACTION_DOWN (%f, %f)", x, y);
                     OnTap(x, y);
                     break;
@@ -190,7 +192,7 @@ extern "C" {
         state->onInputEvent = handle_input;
         engine.app = state;
 
-        __android_log_print (ANDROID_LOG_INFO, "Native", "Entering android_main");
+        __android_log_print (ANDROID_LOG_INFO, TAG, "Entering android_main");
 
         int events;
         android_poll_source *pSource;
@@ -202,7 +204,7 @@ extern "C" {
             }
 
             if (engine.animating) {
-                __android_log_print (ANDROID_LOG_INFO, "Native", "Calling draw_frame() from loop");
+                __android_log_print (ANDROID_LOG_INFO, TAG, "Calling draw_frame() from loop");
                 draw_frame(&engine);
             }
 

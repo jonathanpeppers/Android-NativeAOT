@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PublishAot>true</PublishAot>
+    <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' ">linux-bionic-arm64</RuntimeIdentifier>
+    <!-- SkiaSharp nightly feed -->
+    <RestoreAdditionalProjectSources>https://aka.ms/skiasharp-eap/index.json</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- https://github.com/exelix11/SysDVR/blob/master/Client/Client.csproj -->
+    <!-- Android needs a proper soname property or it will refuse to load the library -->
+    <LinkerArg Include="-Wl,-soname,libdotnet.so" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.1.4" />
+  </ItemGroup>
+
+  <Target Name="_AfterPublish" AfterTargets="Publish">
+    <PropertyGroup>
+      <_NativeFolder>$(MSBuildThisFileDirectory)../Native/app/src/main/libs/arm64-v8a</_NativeFolder>
+    </PropertyGroup>
+    <MakeDir Directories="$(_NativeFolder)" />
+    <ItemGroup>
+      <_FilesToCopy Include="$(PublishDir)$(TargetName).*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_FilesToCopy)" DestinationFolder="$(_NativeFolder)" />
+  </Target>
+
+</Project>

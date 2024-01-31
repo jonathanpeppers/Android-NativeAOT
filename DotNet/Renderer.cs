@@ -1,9 +1,8 @@
 ﻿﻿using Android;
 using System.Runtime.InteropServices;
 using SkiaSharp;
-using static Android.NativeMethods;
 
-namespace hellonativeaot;
+namespace libdotnet;
 
 /// <summary>
 /// https://github.com/mono/SkiaSharp/blob/9274aeec807fd17eec2a3266ad4c2475c37d8a0c/source/SkiaSharp.Views/SkiaSharp.Views/Platform/Android/SKGLSurfaceViewRenderer.cs#L32
@@ -27,15 +26,10 @@ public class Renderer
     static SKShader? currentShader;
     static float X, Y;
 
-    static void LogObject(string message, object obj)
-    {
-        LogPrint(LogPriority.Info, "Managed", $"{message}: {obj?.ToString() ?? "NULL!"}");
-    }
-
     [UnmanagedCallersOnly(EntryPoint = "Render")]
     public static void Render()
     {
-        LogPrint(LogPriority.Info, "Managed", "Render()");
+        Log.Info("Render()");
         try
         {
             GLES20.glClear(GLES20.COLOR_BUFFER_BIT | GLES20.DEPTH_BUFFER_BIT | GLES20.STENCIL_BUFFER_BIT);
@@ -44,9 +38,9 @@ public class Renderer
             if (context == null)
             {
                 var glInterface = GRGlInterface.Create();
-                LogObject("Created GRGlInterface", glInterface);
+                Log.IsNull("Created GRGlInterface", glInterface);
                 context = GRContext.CreateGl(glInterface);
-                LogObject("Created GRContext", context);
+                Log.IsNull("Created GRContext", context);
             }
 
             // manage the drawing surface
@@ -72,18 +66,18 @@ public class Renderer
                 // re-create the render target
                 renderTarget?.Dispose();
                 renderTarget = new GRBackendRenderTarget(newSize.Width, newSize.Height, samples, stencil, glInfo);
-                LogObject("Created GRBackendRenderTarget", renderTarget);
+                Log.IsNull("Created GRBackendRenderTarget", renderTarget);
             }
 
             // create the surface
             if (surface == null)
             {
-                LogObject("Creating SKSurface, context", context);
-                LogObject("Creating SKSurface, renderTarget", renderTarget);
+                Log.IsNull("Creating SKSurface, context", context);
+                Log.IsNull("Creating SKSurface, renderTarget", renderTarget);
                 surface = SKSurface.Create(context, renderTarget, surfaceOrigin, colorType);
-                LogObject("Created SKSurface", surface);
+                Log.IsNull("Created SKSurface", surface);
                 canvas = surface.Canvas;
-                LogObject("surface.Canvas", canvas);
+                Log.IsNull("surface.Canvas", canvas);
             }
 
             ArgumentNullException.ThrowIfNull(canvas);
@@ -107,14 +101,14 @@ public class Renderer
         }
         catch (Exception exc)
         {
-            LogPrint(LogPriority.Error, "Managed", $"Exception in Render(): {exc}");
+            Log.Exception("Exception in Render()", exc);
         }
     }
 
     [UnmanagedCallersOnly(EntryPoint = "Resize")]
     public static void Resize(int width, int height)
     {
-        LogPrint(LogPriority.Info, "Managed", $"Resize({width}, {height})");
+        Log.Info($"Resize({width}, {height})");
         try
         {
             GLES20.glViewport(0, 0, width, height);
@@ -124,7 +118,7 @@ public class Renderer
         }
         catch (Exception exc)
         {
-            LogPrint(LogPriority.Error, "Managed", $"Exception in Resize(): {exc}");
+            Log.Exception("Exception in Resize()", exc);
         }
     }
 
@@ -134,7 +128,7 @@ public class Renderer
     [UnmanagedCallersOnly(EntryPoint = "OnTap")]
     public static void OnTap(float x, float y)
     {
-        LogPrint(LogPriority.Info, "Managed", $"OnTap({x}, {y})");
+        Log.Info($"OnTap({x}, {y})");
         try
         {
             X = x;
@@ -145,7 +139,7 @@ public class Renderer
         }
         catch (Exception exc)
         {
-            LogPrint(LogPriority.Error, "Managed", $"Exception in OnTap(): {exc}");
+            Log.Exception("Exception in OnTap()", exc);
         }
     }
 }
