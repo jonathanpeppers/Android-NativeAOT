@@ -21,4 +21,7 @@ jobs:
         with:
           runCmd: >
             cd DotNet &&
-            dotnet publish
+            dotnet publish &&
+            cd .. &&
+            cd Native &&
+            ./gradlew assembleRelease
