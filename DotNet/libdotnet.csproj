@@ -20,12 +20,12 @@
     <_AggressiveAttributeTrimming>true</_AggressiveAttributeTrimming>
     <!-- From SmolSharp: https://github.com/ascpixi/smolsharp/blob/54a4aeb6e8f6cdd64d049862dee611301082e71b/src/SmolSharp.props#L48-L57 -->
     <IlcDisableReflection>true</IlcDisableReflection>
-		<StackTraceSupport>false</StackTraceSupport>
-		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
-		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
-		<IlcDehydrate>false</IlcDehydrate>
-		<IlcGenerateWin32Resources>false</IlcGenerateWin32Resources>
-		<OptimizationPreference>Size</OptimizationPreference>
+    <StackTraceSupport>false</StackTraceSupport>
+    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+    <IlcDehydrate>false</IlcDehydrate>
+    <IlcGenerateWin32Resources>false</IlcGenerateWin32Resources>
+    <OptimizationPreference>Size</OptimizationPreference>
   </PropertyGroup>
 
   <ItemGroup>
