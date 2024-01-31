@@ -47,6 +47,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
         native_app_glue
+        skia
         dotnet
         log
         EGL
