@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: run dev container
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: >
+            cd DotNet
+            dotnet publish
