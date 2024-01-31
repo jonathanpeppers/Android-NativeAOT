@@ -1,6 +1,5 @@
 using Android;
 using SkiaSharp;
-using static Android.NativeMethods;
 
 namespace libdotnet;
 
@@ -21,7 +20,7 @@ static class Shaders
 
     static string GetRandomShader(int index)
     {
-        LogPrint(LogPriority.Info, "Managed", $"GetRandomShader, index: {index}");
+        Log.Info($"GetRandomShader, index: {index}");
 
         return index switch
         {

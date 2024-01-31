@@ -1,4 +1,4 @@
-using System.Reflection.Metadata.Ecma335;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Android;
@@ -47,13 +47,29 @@ enum LogPriority
     Silent, /* only for SetMinPriority(); must be last */
 }
 
-static class NativeMethods
+static class Log
 {
+    public const string Tag = "DOTNET";
+
     /// <summary>
     /// Writes a formatted string to the log, with priority prio and tag tag.
     /// The details of formatting are the same as for printf(3): http://man7.org/linux/man-pages/man3/printf.3.html
     /// https://developer.android.com/ndk/reference/group/logging#__android_log_print
     /// </summary>
     [DllImport("log", EntryPoint = "__android_log_print", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int LogPrint(LogPriority priority, string tag, string format);
+    static extern int LogPrint(LogPriority priority, string tag, string message);
+
+    [Conditional("TRACE")]
+    public static void Info(string message) =>
+        LogPrint(LogPriority.Info, Tag, message);
+
+    [Conditional("TRACE")]
+    public static void IsNull(string message, object obj) =>
+        Info($"{message}: {obj?.ToString() ?? "NULL!"}");
+
+    public static void Error(string message) =>
+        LogPrint(LogPriority.Info, Tag, message);
+
+    public static void Exception(string message, Exception exc) =>
+        Error($"{message}: {exc}");
 }
