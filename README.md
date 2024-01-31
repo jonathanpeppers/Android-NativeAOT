@@ -30,7 +30,7 @@ The C# side is a:
 
 ## App Size
 
-The release `.apk` file of the SkiaSharp sample is ~4.5 MB
+The release `.apk` file of the SkiaSharp sample is ~4.3 MB
 
 A breakdown of the files inside:
 
@@ -41,7 +41,7 @@ A breakdown of the files inside:
 1981-01-01 01:01:02 .....           56           52  META-INF\com\android\build\gradle\app-metadata.properties
 1981-01-01 01:01:02 .....         1524          753  classes.dex
 1981-01-01 01:01:02 .....      8525024      3733033  lib\arm64-v8a\libSkiaSharp.so
-1981-01-01 01:01:02 .....      1971400       846961  lib\arm64-v8a\libdotnet.so
+1981-01-01 01:01:02 .....      1326720       501321  lib\arm64-v8a\libdotnet.so
 1981-01-01 01:01:02 .....        19504         6869  lib\arm64-v8a\libnativeaot.so
 1981-01-01 01:01:02 .....         2376          867  AndroidManifest.xml
 1981-01-01 01:01:02 .....         7778         7778  res\-6.webp
@@ -60,11 +60,11 @@ A breakdown of the files inside:
 1981-01-01 01:01:02 .....         3918         3918  res\u5.webp
 1981-01-01 01:01:02 .....         1772         1772  res\yw.webp
 1981-01-01 01:01:02 .....         2036         2036  resources.arsc
-1981-01-01 01:01:02 .....         2085         1127  META-INF\CERT.SF
-1981-01-01 01:01:02 .....         1167         1017  META-INF\CERT.RSA
-1981-01-01 01:01:02 .....         2011         1050  META-INF\MANIFEST.MF
+1981-01-01 01:01:02 .....         2085         1126  META-INF\CERT.SF
+1981-01-01 01:01:02 .....         1167         1020  META-INF\CERT.RSA
+1981-01-01 01:01:02 .....         2011         1048  META-INF\MANIFEST.MF
 ------------------- ----- ------------ ------------  ------------------------
-1981-01-01 01:01:02           10569629      4629574  25 files
+1981-01-01 01:01:02            9924949      4283934  25 files
 ```
 
 `libdotnet.so` is ~1.3MB, and `libSkiaSharp.so` is ~8.5MB!
