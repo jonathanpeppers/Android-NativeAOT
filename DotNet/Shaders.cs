@@ -1,4 +1,6 @@
+using Android;
 using SkiaSharp;
+using static Android.NativeMethods;
 
 namespace hellonativeaot;
 
@@ -12,6 +14,8 @@ static class Shaders
 
     static string GetRandomShader(int index)
     {
+        LogPrint(LogPriority.Info, "Managed", $"GetRandomShader, index: {index}");
+
         return index switch
         {
             // https://shaders.skia.org/?id=de2a4d7d893a7251eb33129ddf9d76ea517901cec960db116a1bbd7832757c1f
