@@ -25,6 +25,7 @@ public class Renderer
     static readonly SKPaint currentPaint = new();
     static SKRuntimeShaderBuilder? currentEffectBuilder;
     static SKShader? currentShader;
+    static float X, Y;
 
     static void LogObject(string message, object obj)
     {
@@ -93,6 +94,7 @@ public class Renderer
                 currentEffectBuilder ??= Shaders.GetRandomShader();
                 currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
                 currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.TotalDuration.TotalSeconds;
+                currentEffectBuilder.Uniforms["iMouse"] = new SKPoint3(X, Y, 0);
                 currentShader = currentEffectBuilder.Build();
                 currentPaint.Shader = currentShader;
 
@@ -135,6 +137,9 @@ public class Renderer
         LogPrint(LogPriority.Info, "Managed", $"OnTap({x}, {y})");
         try
         {
+            X = x;
+            Y = y;
+
             // Should trigger a new random shader
             currentEffectBuilder = null;
         }
