@@ -18,6 +18,8 @@ target_include_directories(native_app_glue PUBLIC
 
 add_library(hello_native_aot SHARED IMPORTED)
 set_property(TARGET hello_native_aot PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/hellonativeaot.so")
+add_library(skia SHARED IMPORTED)
+set_property(TARGET skia PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/libSkiaSharp.so")
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate")
 
@@ -46,4 +48,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         android
         native_app_glue
         hello_native_aot
-        log)
+        skia
+        log
+        EGL
+        GLESv1_CM)

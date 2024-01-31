@@ -1,1 +1,3 @@
-extern "C" int ManagedAdd(int x, int y);
+extern "C" void Render();
+
+extern "C" void Resize(int width, int height);
