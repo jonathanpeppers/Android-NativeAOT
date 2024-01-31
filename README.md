@@ -91,7 +91,7 @@ extern "C" int ManagedAdd(int x, int y);
 
 // in native-lib.cpp
 int result = ManagedAdd(1, 2);
-__android_log_print (ANDROID_LOG_INFO, "Native", "ManagedAdd(1, 2) returned: %i", result);
+__android_log_print (ANDROID_LOG_INFO, TAG, "ManagedAdd(1, 2) returned: %i", result);
 ```
 
 Results in the message:
