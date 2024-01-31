@@ -163,6 +163,17 @@ extern "C" {
     }
 
     int32_t handle_input(struct android_app* app, AInputEvent* event) {
+        if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
+            int32_t action = AMotionEvent_getAction(event);
+            switch (action & AMOTION_EVENT_ACTION_MASK) {
+                case AMOTION_EVENT_ACTION_DOWN:
+                    __android_log_print (ANDROID_LOG_INFO, "Native", "AMOTION_EVENT_ACTION_DOWN");
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return 0;
     }
 
