@@ -4,12 +4,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <InvariantGlobalization>true</InvariantGlobalization>
     <PublishAot>true</PublishAot>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
     <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' ">linux-bionic-arm64</RuntimeIdentifier>
     <!-- SkiaSharp nightly feed -->
     <RestoreAdditionalProjectSources>https://aka.ms/skiasharp-eap/index.json</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <!-- Trimmer switches -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <!-- From Android workload: https://github.com/xamarin/xamarin-android/blob/80ee320ed0bb245768ba436b76f9309aca18abc3/src/Xamarin.Android.Build.Tasks/Microsoft.Android.Sdk/targets/Microsoft.Android.Sdk.DefaultProperties.targets#L95-L110 -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
+    <_AggressiveAttributeTrimming>true</_AggressiveAttributeTrimming>
+    <!-- From SmolSharp: https://github.com/ascpixi/smolsharp/blob/54a4aeb6e8f6cdd64d049862dee611301082e71b/src/SmolSharp.props#L48-L57 -->
+    <IlcDisableReflection>true</IlcDisableReflection>
+    <StackTraceSupport>false</StackTraceSupport>
+    <OptimizationPreference>Size</OptimizationPreference>
   </PropertyGroup>
 
   <ItemGroup>
