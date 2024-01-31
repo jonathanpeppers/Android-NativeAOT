@@ -19,7 +19,8 @@
 				"ms-dotnettools.csdevkit",
 				"ms-vscode.cpptools",
 				"icsharpcode.ilspy-vscode",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"lambdageek.msbuild-structured-log-viewer"
 			]
 		}
 	}
