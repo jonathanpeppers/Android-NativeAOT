@@ -24,11 +24,12 @@ jobs:
             dotnet publish &&
             cd .. &&
             cd Native &&
+            ./gradlew assembleDebug &&
             ./gradlew assembleRelease
 
-      - name: archive apk
+      - name: archive apks
         uses: actions/upload-artifact@v2
         with:
           name: apk
-          path: Native/app/build/outputs/apk/release
+          path: Native/app/build/outputs/apk
           if-no-files-found: error
