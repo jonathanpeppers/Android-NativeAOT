@@ -74,10 +74,10 @@ static class Shaders
             // Star Nest by Pablo Roman Andrioli
             // This content is under the MIT License.
             2 => """
-                const int iterations = 17;
+                const int iterations = 10;
                 const float formuparam = 0.53;
 
-                const int volsteps = 20;
+                const int volsteps = 10;
                 const float stepsize = 0.1;
 
                 const float zoom  = 0.800;
