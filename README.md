@@ -67,7 +67,7 @@ A breakdown of the files inside:
 1981-01-01 01:01:02           10569629      4629574  25 files
 ```
 
-`libdotnet.so` is ~1.9MB, and `libSkiaSharp.so` is ~8.5MB!
+`libdotnet.so` is ~1.3MB, and `libSkiaSharp.so` is ~8.5MB!
 
 If we reduce this to a "Hello World" example:
 
