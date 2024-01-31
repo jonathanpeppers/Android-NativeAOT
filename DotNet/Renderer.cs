@@ -91,7 +91,7 @@ public class Renderer
                 frameCounter.NextFrame();
 
                 currentEffectBuilder ??= Shaders.GetRandomShader();
-                currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width, lastSize.Height, 0);
+                currentEffectBuilder.Uniforms["iResolution"] = new SKPoint3(lastSize.Width / 2, lastSize.Height / 2, 0);
                 currentEffectBuilder.Uniforms["iTime"] = (float)frameCounter.TotalDuration.TotalSeconds;
                 currentShader = currentEffectBuilder.Build();
                 currentPaint.Shader = currentShader;
