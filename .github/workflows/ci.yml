@@ -24,7 +24,7 @@ jobs:
             dotnet publish &&
             cd .. &&
             cd Native &&
-            sudo ./gradle dependencies &&
+            sudo ./gradlew dependencies &&
             ./gradlew assembleRelease
 
       - name: archive apk
