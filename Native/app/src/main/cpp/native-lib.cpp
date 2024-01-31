@@ -166,9 +166,13 @@ extern "C" {
         if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
             int32_t action = AMotionEvent_getAction(event);
             switch (action & AMOTION_EVENT_ACTION_MASK) {
-                case AMOTION_EVENT_ACTION_DOWN:
-                    __android_log_print (ANDROID_LOG_INFO, "Native", "AMOTION_EVENT_ACTION_DOWN");
+                case AMOTION_EVENT_ACTION_DOWN: {
+                    float x = AMotionEvent_getX(event, 0);
+                    float y = AMotionEvent_getY(event, 0);
+                    __android_log_print(ANDROID_LOG_INFO, "Native",
+                                        "AMOTION_EVENT_ACTION_DOWN (%f, %f)", x, y);
                     break;
+                }
                 default:
                     break;
             }
