@@ -5,6 +5,8 @@ plugins {
 android {
     namespace 'com.jonathanpeppers.nativeaot'
     compileSdk 34
+    // Doing this to match NDK NativeAOT is using
+    ndkVersion "23.2.8568313"
 
     defaultConfig {
         applicationId "com.jonathanpeppers.nativeaot"
@@ -19,10 +21,21 @@ android {
         }
     }
 
+    // Just use the built-in debug keystore
+    signingConfigs {
+        release {
+            storeFile file("${System.getProperty('user.home')}/.android/debug.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
