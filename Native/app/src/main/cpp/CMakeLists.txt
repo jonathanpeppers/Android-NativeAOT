@@ -18,8 +18,6 @@ target_include_directories(native_app_glue PUBLIC
 
 add_library(dotnet SHARED IMPORTED)
 set_property(TARGET dotnet PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/libdotnet.so")
-add_library(skia SHARED IMPORTED)
-set_property(TARGET skia PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/${ANDROID_ABI}/libSkiaSharp.so")
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate")
 
@@ -47,8 +45,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
         native_app_glue
-        skia
         dotnet
-        log
-        EGL
-        GLESv1_CM)
+        log)
