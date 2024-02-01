@@ -74,6 +74,31 @@ If we reduce this to a "Hello World" example:
 * `hello.apk` is ~430 KB!
 * `libdotnet.so` (uncompressed) is ~821 KB!
 
+## Startup Time
+
+The average of 10 runs on a Pixel 5 of the SkiaSharp sample:
+
+```log
+Average(ms): 121
+Std Err(ms): 3.29983164553722
+Std Dev(ms): 10.434983894999
+```
+
+Average of 10 runs on a Pixel 5 of the "Hello World" example:
+
+```log
+Average(ms): 120.9
+Std Err(ms): 2.97937353594118
+Std Dev(ms): 9.42160637400367
+```
+
+They might be effectively the same.
+
+For comparison (as of .NET 8), a `dotnet new android` app is about ~180ms on a
+Pixel 5, and `dotnet new maui` is about ~560ms.
+
+Source: https://github.com/jonathanpeppers/maui-profiling
+
 ## "Hello World" Example
 
 See the [HelloWorld](https://github.com/jonathanpeppers/Android-NativeAOT/tree/HelloWorld) branch.
