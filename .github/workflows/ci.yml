@@ -14,7 +14,7 @@ jobs:
     steps:
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: run dev container
         uses: devcontainers/ci@v0.3
@@ -28,7 +28,7 @@ jobs:
             ./gradlew assembleRelease
 
       - name: archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: outputs
           path: Native/app/build/outputs
