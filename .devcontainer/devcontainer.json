@@ -10,9 +10,6 @@
 
 	"postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh",
 
-	"remoteEnv": {
-		"PATH": "${containerEnv:ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/:${containerEnv:PATH}"
-	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
