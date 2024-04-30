@@ -10,6 +10,9 @@
 
 	"postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh",
 
+	"remoteEnv": {
+		"ANDROID_NDK_HOME": "${containerEnv:ANDROID_HOME}/ndk/23.2.8568313/"
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
