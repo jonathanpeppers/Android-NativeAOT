@@ -3,6 +3,7 @@
     <_NdkSysrootAbi Condition=" '$(RuntimeIdentifier)' == 'linux-bionic-arm64' ">aarch64-linux-android</_NdkSysrootAbi>
     <_NdkClangPrefix Condition=" '$(RuntimeIdentifier)' == 'linux-bionic-arm64' ">aarch64-linux-android21-</_NdkClangPrefix>
     <_NdkPrebuiltAbi Condition=" '$(NETCoreSdkRuntimeIdentifier)' == 'osx-x64' ">darwin-x86_64</_NdkPrebuiltAbi>
+    <_NdkPrebuiltAbi Condition=" '$(NETCoreSdkRuntimeIdentifier)' == 'linux-x64' ">linux-x86_64</_NdkPrebuiltAbi>
     <_NdkSysrootDir>$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(_NdkPrebuiltAbi)/sysroot/usr/lib/$(_NdkSysrootAbi)</_NdkSysrootDir>
     <_NdkBinDir>$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(_NdkPrebuiltAbi)/bin</_NdkBinDir>
   </PropertyGroup>
