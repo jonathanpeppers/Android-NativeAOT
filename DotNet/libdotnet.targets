@@ -1,0 +1,35 @@
+<Project>
+  <PropertyGroup>
+    <_NdkSysrootAbi Condition=" '$(RuntimeIdentifier)' == 'linux-bionic-arm64' ">aarch64-linux-android</_NdkSysrootAbi>
+    <_NdkClangPrefix Condition=" '$(RuntimeIdentifier)' == 'linux-bionic-arm64' ">aarch64-linux-android21-</_NdkClangPrefix>
+    <_NdkPrebuiltAbi Condition=" '$(NETCoreSdkRuntimeIdentifier)' == 'osx-x64' ">darwin-x86_64</_NdkPrebuiltAbi>
+    <_NdkPrebuiltAbi Condition=" '$(NETCoreSdkRuntimeIdentifier)' == 'linux-x64' ">linux-x86_64</_NdkPrebuiltAbi>
+    <_NdkSysrootDir>$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(_NdkPrebuiltAbi)/sysroot/usr/lib/$(_NdkSysrootAbi)</_NdkSysrootDir>
+    <_NdkBinDir>$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(_NdkPrebuiltAbi)/bin</_NdkBinDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('linux-bionic'))">
+    <LinkStandardCPlusPlusLibrary>true</LinkStandardCPlusPlusLibrary>
+    <CppCompilerAndLinker>$(_NdkBinDir)/$(_NdkClangPrefix)clang++</CppCompilerAndLinker>
+    <ObjCopyName>$(_NdkBinDir)/llvm-objcopy</ObjCopyName>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux-bionic'))">
+    <LinkerArg Include="-Wl,--defsym,_init=__libc_init" />
+    <LinkerArg Include="-Wl,--defsym,_fini=__libc_fini" />
+    <LinkerArg Include="-L &quot;$(_NdkSysrootDir)&quot;" />
+    <NativeSystemLibrary Include="c" />
+  </ItemGroup>
+
+  <Target Name="_ValidateEnvironment"
+      BeforeTargets="Build">
+    <Error
+        Condition=" '$(ANDROID_NDK_HOME)' == '' Or !Exists($(ANDROID_NDK_HOME)) "
+        Text="Set the %24ANDROID_NDK_HOME environment variable to the path of the Android NDK."
+     />
+    <Error
+        Condition=" !Exists($(_NdkSysrootDir))"
+        Text="NDK 'sysroot' dir `$(_NdkSysrootDir)` does not exist. You're on your own."
+    />
+  </Target>
+</Project>

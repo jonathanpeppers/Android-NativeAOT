@@ -45,4 +45,6 @@
     <Copy SourceFiles="@(_FilesToCopy)" DestinationFolder="$(_NativeFolder)" />
   </Target>
 
+  <Import Project="libdotnet.targets" />
+
 </Project>
