@@ -9,16 +9,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('linux-bionic'))">
-    <LinkStandardCPlusPlusLibrary>true</LinkStandardCPlusPlusLibrary>
     <CppCompilerAndLinker>$(_NdkBinDir)/$(_NdkClangPrefix)clang++</CppCompilerAndLinker>
     <ObjCopyName>$(_NdkBinDir)/llvm-objcopy</ObjCopyName>
   </PropertyGroup>
 
   <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux-bionic'))">
-    <LinkerArg Include="-Wl,--defsym,_init=__libc_init" />
-    <LinkerArg Include="-Wl,--defsym,_fini=__libc_fini" />
-    <LinkerArg Include="-L &quot;$(_NdkSysrootDir)&quot;" />
-    <NativeSystemLibrary Include="c" />
+    <LinkerArg Include="-Wl,--undefined-version" />
   </ItemGroup>
 
   <Target Name="_ValidateEnvironment"
@@ -31,5 +27,18 @@
         Condition=" !Exists($(_NdkSysrootDir))"
         Text="NDK 'sysroot' dir `$(_NdkSysrootDir)` does not exist. You're on your own."
     />
+  </Target>
+
+  <Target Name="_CopyLibcppShared"
+      AfterTargets="Publish">
+    <PropertyGroup>
+      <_JniLibsDir>../Native/app/src/main/jniLibs/arm64-v8a</_JniLibsDir>
+    </PropertyGroup>
+    <MakeDir Directories="../Native/app/src/main/jniLibs/arm64-v8a" />
+    <ItemGroup>
+      <_Source Include="$(_NdkSysrootDir)\libc++_shared.so" />
+      <_Target Include="$(_JniLibsDir)\libc++_shared.so" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_Source)" DestinationFiles="@(_Target)" />
   </Target>
 </Project>

@@ -2,6 +2,33 @@
 
 A .NET 8, NativeAOT example on Android.
 
+## Getting started
+
+Configure your environment: the following environment variables are required:
+
+  * `ANDROID_NDK_HOME`: The path to an Android NDK installation.
+  * `ANDROID_HOME`: The path to an Android SDK installation.
+
+Build the project:
+
+```console
+dotnet build
+dotnet publish DotNet/libdotnet.csproj
+(cd Native && ./gradlew assembleRelease)
+```
+
+Install the app:
+
+```console
+$ANDROID_HOME/platform-tools/adb install Native/app/build/outputs/apk/release/app-release.apk
+```
+
+Run the app:
+
+```console
+$ANDROID_HOME/platform-tools/adb shell am start com.jonathanpeppers.nativeaot/android.app.NativeActivity
+```
+
 ## Example using SkiaSharp
 
 This sample has a C++ Android Studio project:
